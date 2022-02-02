@@ -40,10 +40,10 @@ data SearchResult
   { _tweetText :: T.Text
   , _userName :: User
   , _description :: T.Text
-  }
+  } deriving Show
 
 instance A.FromJSON SearchResult where
-  parseJSON = A.withObject "" $ \value -> do
+  parseJSON = A.withArray "statuses" $ \value -> do
     tweetText <- value .: "text"
     userInfo <- value .: "user"
     screenName <- userInfo .: "screen_name"
