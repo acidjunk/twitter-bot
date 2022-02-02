@@ -9,14 +9,18 @@ module Bot.Twitter
   , searchTweetsForUser
   ) where
 
+import GHC.Generics
 import Data.Maybe (fromJust)
+import Data.Vector
 import qualified Data.Text as T
 import qualified Data.Aeson as A
+import qualified Data.Aeson.Types as A
 import Data.Aeson ((.:))
 import Control.Monad.Reader
 import Web.Tweet
 import Web.Tweet.API
 import Web.Tweet.Utils
+
 
 newtype TwitterM a
   = TwitterM (ReaderT FilePath IO a)
@@ -35,23 +39,32 @@ newtype SearchTerm = SearchTerm T.Text
 newtype User = User T.Text
   deriving (Eq, Show)
 
+
+
+newtype SearchResults
+  = SearchResults (Vector SearchResult)
+  deriving Show
+
 data SearchResult
   = SearchResult
   { _tweetText :: T.Text
   , _userName :: User
   , _description :: T.Text
-  }
+  } deriving Show
+
+instance A.FromJSON SearchResults where
+  parseJSON = A.withArray "statuses" (fmap SearchResults . traverse A.parseJSON)
 
 instance A.FromJSON SearchResult where
-  parseJSON = A.withObject "" $ \value -> do
+  parseJSON (A.Object value) = do
     tweetText <- value .: "text"
     userInfo <- value .: "user"
     screenName <- userInfo .: "screen_name"
     description <- userInfo .: "description"
     pure $ SearchResult tweetText (User screenName) description
+  parseJSON _ = mzero
 
-
-searchForKeywords :: SearchTerm -> TwitterM [SearchResult]
+searchForKeywords :: SearchTerm -> TwitterM SearchResults
 searchForKeywords (SearchTerm keywords) = do
   credentialsPath <- ask
   let query = "?q=" <> T.unpack keywords

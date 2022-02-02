@@ -18,4 +18,5 @@ main = do
 
   let parsedTweets = map (\t -> _screenName t <> ":" <> _text t) tweets
   print parsedTweets
+  print results
 

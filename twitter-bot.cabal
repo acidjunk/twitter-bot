@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3e7b963e452f40a4c1ae04a3177dd720ee51d0903e23975e6cdac9e3bf77d61d
+-- hash: 42b515b8083f33b8933c81bb4c6c9fe61a8cd8e95ae6465ef9ac4221b9dce356
 
 name:           twitter-bot
 version:        0.1.0.0
@@ -39,6 +39,7 @@ library
     , mtl
     , text
     , tweet-hs
+    , vector
   default-language: Haskell2010
 
 executable twitter-bot-exe
@@ -55,6 +56,7 @@ executable twitter-bot-exe
     , text
     , tweet-hs
     , twitter-bot
+    , vector
   default-language: Haskell2010
 
 test-suite twitter-bot-test
@@ -72,4 +74,5 @@ test-suite twitter-bot-test
     , text
     , tweet-hs
     , twitter-bot
+    , vector
   default-language: Haskell2010
