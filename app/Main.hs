@@ -1,7 +1,12 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import Lib
+import qualified Bot.Twitter as Twitter
 
 main :: IO ()
-main = someFunc
+main = do
+  let keywords = [Twitter.Keyword "music", Twitter.Keyword "jazz"]
+  authors <- Twitter.runTwitter ".cred.toml" $ Twitter.searchForKeywords keywords
+  print authors
 

@@ -1,8 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: 3e7b963e452f40a4c1ae04a3177dd720ee51d0903e23975e6cdac9e3bf77d61d
 
 name:           twitter-bot
 version:        0.1.0.0
@@ -25,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      Bot.Twitter
       Lib
   other-modules:
       Paths_twitter_bot
@@ -33,6 +36,8 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , mtl
+    , text
     , tweet-hs
   default-language: Haskell2010
 
@@ -46,6 +51,8 @@ executable twitter-bot-exe
   build-depends:
       aeson
     , base >=4.7 && <5
+    , mtl
+    , text
     , tweet-hs
     , twitter-bot
   default-language: Haskell2010
@@ -61,6 +68,8 @@ test-suite twitter-bot-test
   build-depends:
       aeson
     , base >=4.7 && <5
+    , mtl
+    , text
     , tweet-hs
     , twitter-bot
   default-language: Haskell2010
