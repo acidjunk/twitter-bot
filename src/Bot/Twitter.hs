@@ -53,16 +53,18 @@ data SearchResult
   } deriving Show
 
 instance A.FromJSON SearchResults where
-  parseJSON = A.withArray "statuses" (fmap SearchResults . traverse A.parseJSON)
+  parseJSON = A.withObject "SearchResults" $ \value -> do
+    statuses <- value .: "statuses"
+    parsedResults <- traverse A.parseJSON statuses
+    pure $ SearchResults parsedResults
 
 instance A.FromJSON SearchResult where
-  parseJSON (A.Object value) = do
+  parseJSON = A.withObject "SearchResult" $ \value -> do
     tweetText <- value .: "text"
     userInfo <- value .: "user"
     screenName <- userInfo .: "screen_name"
     description <- userInfo .: "description"
     pure $ SearchResult tweetText (User screenName) description
-  parseJSON _ = mzero
 
 searchForKeywords :: SearchTerm -> TwitterM SearchResults
 searchForKeywords (SearchTerm keywords) = do
